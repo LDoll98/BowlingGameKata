@@ -45,6 +45,7 @@ public class BowlingGameTest {
         game.roll(1);
 
         int result = game.score();
+
         assertEquals(result, ((3+4) + (5+1)));
     }
 
@@ -55,11 +56,12 @@ public class BowlingGameTest {
         game.roll(3);   //spare
         game.roll(5);   //spare-Bonus
         game.roll(2);
-
+        //new Throw
         game.roll(1);
         game.roll(4);
 
         int result = game.score();
+
         assertEquals(result, (7+3+5) + (5+2) + (1+4));
     }
 
@@ -119,9 +121,9 @@ public class BowlingGameTest {
 
         game.roll(2);
         game.roll(8); //spare
-        game.roll(6);
+        //game.roll(6);
 
         int result = game.score();
-        assertEquals(result, 133);
+        assertEquals(result, 133-6);
     }
 }

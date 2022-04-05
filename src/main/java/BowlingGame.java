@@ -1,47 +1,72 @@
 public class BowlingGame implements PinGame{
-    public int[] frames = new int[10];
-    public int nFrame, nThrow, score = 0;
-    public boolean spare = false;
-    public boolean strike = false;
+    private final int[] frames = new int[10];
+    private int nFrame, nThrow, score = 0;
+    private boolean spare = false;
+    private boolean strike = false;
+
+    private boolean throwOne = true;
+    private boolean throwTwo = false;
+
+    private boolean isStrike(int pins) {
+        return throwOne && pins <= 10;
+    }
+    private boolean isSpare() {
+        return frames[nFrame] == 10;
+    }
+    private boolean isFrameFull() {
+        return frames[nFrame] == 30 && nFrame < (frames.length-1);
+    }
+
+
+
+    private void spareBonus(int pins) {
+        nFrame++;
+        frames[nFrame] += pins;
+        spare = false;
+    }
+    private void strikeBonus(int pins) {
+        if (throwOne) {
+            frames[nFrame + 1] += pins;
+        } else {
+            nFrame++;
+            frames[nFrame] += pins;
+            strike = false;
+        }
+    }
 
     public void roll(int pins) {
-        if(nThrow == 0 && pins < 10) {
-            frames[nFrame] += pins;
-            if(spare || strike) {
-                frames[nFrame+1] += pins;
-                if(spare) {
-                    nFrame++;
-                    spare = false;
-                }
-            }
-            nThrow++;
-        } else if(nThrow == 1 && pins < 10) {
-            frames[nFrame] += pins;
-            if(strike) {
-                nFrame++;
-                frames[nFrame] += pins;
-                strike = false;
-            }
-            if(frames[nFrame] == 10)
+        if(isFrameFull())
+            nFrame++;
+        frames[nFrame] += pins;
+        if(spare)
+            spareBonus(pins);
+        if(strike)
+            strikeBonus(pins);
+
+        if(throwOne && pins < 10) {
+            /*
+            if(spare)
+                spareBonus(pins);
+            if(strike)
+                strikeBonus(pins);
+            */
+            throwOne = false;
+            throwTwo = true;
+        } else if(throwTwo) {
+            //if(strike)
+            //    strikeBonus(pins);
+            if(isSpare())
                 spare = true;
-            else {
+            else
                 nFrame++;
-                spare = false;
-            }
-            if(nFrame == 9 && spare) nThrow = 1;
-            else nThrow = 0;
-        } else if(nThrow == 0 && pins == 10) {
-            if(frames[nFrame] == 30 && nFrame < (frames.length-1)) {
-                nFrame++;
-            }
-            frames[nFrame] += pins;
-            if(spare) {
-                nFrame++;
-                frames[nFrame] += pins;
-                spare = false;
-            }
+            throwOne = true;
+            throwTwo = false;
+        } else if(isStrike(pins)) {
             strike = true;
+            //if(spare)
+            //    spareBonus(pins);
         }
+
     }
 
     public int score() {

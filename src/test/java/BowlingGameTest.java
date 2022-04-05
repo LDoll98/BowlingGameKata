@@ -21,8 +21,15 @@ public class BowlingGameTest {
         game.roll(10);
 
         game.roll(10);
+        game.roll(10);
+        game.roll(10);
+
+        game.roll(10);
+        game.roll(10);
+        game.roll(10);
+
         int result = game.score();
-        assertEquals(result, 70);
+        assertEquals(result, 300);
     }
 
     @Test

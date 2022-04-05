@@ -1,11 +1,12 @@
 public class BowlingGame implements PinGame{
     private final int[] frames = new int[10];
-    private int nFrame, nThrow, score = 0;
+    private int nFrame, score = 0;
     private boolean spare = false;
     private boolean strike = false;
 
     private boolean throwOne = true;
     private boolean throwTwo = false;
+
 
     private boolean isStrike(int pins) {
         return throwOne && pins <= 10;
@@ -16,7 +17,9 @@ public class BowlingGame implements PinGame{
     private boolean isFrameFull() {
         return frames[nFrame] == 30 && nFrame < (frames.length-1);
     }
-
+    private boolean lastFrame() {
+        return (nFrame + 1) == 9;
+    }
 
 
     private void spareBonus(int pins) {
@@ -27,6 +30,11 @@ public class BowlingGame implements PinGame{
     private void strikeBonus(int pins) {
         if (throwOne) {
             frames[nFrame + 1] += pins;
+            //3 Strikes in a row!
+            if(isFrameFull()) {
+                nFrame++;
+                frames[nFrame + 1] += pins;
+            }
         } else {
             nFrame++;
             frames[nFrame] += pins;
@@ -44,17 +52,9 @@ public class BowlingGame implements PinGame{
             strikeBonus(pins);
 
         if(throwOne && pins < 10) {
-            /*
-            if(spare)
-                spareBonus(pins);
-            if(strike)
-                strikeBonus(pins);
-            */
             throwOne = false;
             throwTwo = true;
         } else if(throwTwo) {
-            //if(strike)
-            //    strikeBonus(pins);
             if(isSpare())
                 spare = true;
             else
@@ -63,10 +63,7 @@ public class BowlingGame implements PinGame{
             throwTwo = false;
         } else if(isStrike(pins)) {
             strike = true;
-            //if(spare)
-            //    spareBonus(pins);
         }
-
     }
 
     public int score() {

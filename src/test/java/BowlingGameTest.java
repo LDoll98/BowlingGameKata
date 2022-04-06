@@ -26,7 +26,7 @@ public class BowlingGameTest {
 
         game.roll(10);
         game.roll(10);
-        game.roll(10);
+
 
         int result = game.score();
         assertEquals(result, 300);
@@ -128,9 +128,9 @@ public class BowlingGameTest {
 
         game.roll(2);
         game.roll(8); //spare
-        //game.roll(6);
+        game.roll(6);
 
         int result = game.score();
-        assertEquals(result, 133-6);
+        assertEquals(result, 133);
     }
 }

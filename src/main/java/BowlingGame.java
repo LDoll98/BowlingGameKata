@@ -1,6 +1,6 @@
 public class BowlingGame implements PinGame{
     private final int[] frames = new int[10];
-    private int nFrame, score = 0;
+    private int frameIdx, score = 0;
     private boolean spare = false;
     private boolean strike = false;
 
@@ -12,55 +12,64 @@ public class BowlingGame implements PinGame{
         return throwOne && pins <= 10;
     }
     private boolean isSpare() {
-        return frames[nFrame] == 10;
+        return frames[frameIdx] == 10;
     }
     private boolean isFrameFull() {
-        return frames[nFrame] == 30 && nFrame < (frames.length-1);
+        return frames[frameIdx] == 30 && frameIdx < (frames.length-1);
     }
     private boolean lastFrame() {
-        return (nFrame + 1) == 9;
+        return (frameIdx) == 9;
     }
 
 
     private void spareBonus(int pins) {
-        nFrame++;
-        frames[nFrame] += pins;
+        frameIdx++;
+        frames[frameIdx] += pins;
         spare = false;
     }
     private void strikeBonus(int pins) {
         if (throwOne) {
-            frames[nFrame + 1] += pins;
-            //3 Strikes in a row!
+            frames[frameIdx + 1] += pins;
             if(isFrameFull()) {
-                nFrame++;
-                frames[nFrame + 1] += pins;
+                frameIdx++;
+                if(lastFrame())
+                    frames[frameIdx] += pins;
+                else
+                    frames[frameIdx + 1] += pins;
             }
         } else {
-            nFrame++;
-            frames[nFrame] += pins;
+            frameIdx++;
+            frames[frameIdx] += pins;
             strike = false;
+        }
+    }
+    private void changeThrow(boolean changeToSecond) {
+        if(changeToSecond) {
+            throwOne = false;
+            throwTwo = true;
+        } else {
+            throwOne = true;
+            throwTwo = false;
         }
     }
 
     public void roll(int pins) {
         if(isFrameFull())
-            nFrame++;
-        frames[nFrame] += pins;
-        if(spare)
+            frameIdx++;
+        frames[frameIdx] += pins;
+        if(spare && !lastFrame())
             spareBonus(pins);
         if(strike)
             strikeBonus(pins);
 
         if(throwOne && pins < 10) {
-            throwOne = false;
-            throwTwo = true;
+            changeThrow(true);
         } else if(throwTwo) {
             if(isSpare())
                 spare = true;
             else
-                nFrame++;
-            throwOne = true;
-            throwTwo = false;
+                frameIdx++;
+            changeThrow(false);
         } else if(isStrike(pins)) {
             strike = true;
         }

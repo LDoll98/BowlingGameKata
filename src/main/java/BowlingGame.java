@@ -9,7 +9,7 @@ public class BowlingGame implements PinGame{
 
 
     private boolean isStrike(int pins) {
-        return throwOne && pins <= 10;
+        return throwOne && pins == 10;
     }
     private boolean isSpare() {
         return frames[frameIdx] == 10;

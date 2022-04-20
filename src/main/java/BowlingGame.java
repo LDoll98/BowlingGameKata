@@ -1,5 +1,7 @@
 public class BowlingGame implements PinGame{
     private final int[] frames = new int[10];
+    private final int MAX_PINS = 10;
+    private final int MAX_FRAME_POINTS = 30;
     private int frameIdx, score = 0;
     private boolean spare = false;
     private boolean strike = false;
@@ -9,13 +11,13 @@ public class BowlingGame implements PinGame{
 
 
     private boolean isStrike(int pins) {
-        return throwOne && pins == 10;
+        return throwOne && pins == MAX_PINS;
     }
     private boolean isSpare() {
-        return frames[frameIdx] == 10;
+        return frames[frameIdx] == MAX_PINS;
     }
     private boolean isFrameFull() {
-        return frames[frameIdx] == 30 && frameIdx < (frames.length-1);
+        return frames[frameIdx] == MAX_FRAME_POINTS && frameIdx < (frames.length-1);
     }
     private boolean lastFrame() {
         return (frameIdx) == 9;

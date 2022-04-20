@@ -64,7 +64,7 @@ public class BowlingGame implements PinGame{
         if(strike)
             strikeBonus(pins);
 
-        if(throwOne && pins < 10) {
+        if(throwOne && pins < MAX_PINS) {
             changeThrow(true);
         } else if(throwTwo) {
             if(isSpare())

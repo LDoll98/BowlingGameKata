@@ -76,11 +76,11 @@ public class BowlingGame implements PinGame{
     }
 
     public int score() {
-        int i = 1;
+        int frameNumber = 1;
         for(int frameValue : frames) {
             score += frameValue;
-            System.out.println("frame " + i + ":\t" + frameValue + "\t->\t" + score);
-            i++;
+            System.out.println("frame " + frameNumber + ":\t" + frameValue + "\t->\t" + score);
+            frameNumber++;
         }
         return score;
     }
